@@ -9,12 +9,3 @@ phases:
 artifacts:
   files:
     - '**/*'
-
-post_build:
-  commands:
-    - |
-      aws logs put-subscription-filter \
-      --log-group-name /aws/codebuild/justbuild \
-      --filter-name MySubscriptionFilter \
-      --filter-pattern "" \
-      --destination-arn arn:aws:sns:us-east-1:932757591213:buildsuccess
