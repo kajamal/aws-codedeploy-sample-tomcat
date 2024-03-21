@@ -5,11 +5,10 @@ phases:
     commands:
       - echo Build completed on `date`
       - mvn package
-  post_build:
-    commands:    
-        - aws logs get-log-events --log-group-name /aws/codebuild/justbuild --log-stream-name $(aws codebuild batch-get-builds --ids $CODEBUILD_BUILD_ID --query 'builds[].logs.streamName' --output text) --query 'events[].message' --output text > build_and_cloudwatch_logs.txt
 
-      # Check if build is successful
+  post_build:
+    commands:
+      - aws logs get-log-events --log-group-name /aws/codebuild/justbuild --log-stream-name $(aws codebuild batch-get-builds --ids $CODEBUILD_BUILD_ID --query 'builds[].logs.streamName' --output text) --query 'events[].message' --output text > build_and_cloudwatch_logs.txt
       - |
         if [ "$CODEBUILD_BUILD_SUCCEEDING" == "1" ]; then
           # Publish build logs to SNS topic
